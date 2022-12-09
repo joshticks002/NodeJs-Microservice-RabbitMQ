@@ -3,7 +3,8 @@ import express from "express";
 import cors from "cors";
 import helmet from "helmet";
 import errorHandler from "./middleware/error-handler";
-import { DataSource } from "typeorm";
+import { PostgresDataSource } from "./database/db";
+import router from "./routes/product.routes";
 
 dotenv.config();
 
@@ -20,19 +21,8 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(router);
 app.use(errorHandler);
-
-export const PostgresDataSource = new DataSource({
-  type: "postgres",
-  host: process.env.PG_HOST as string,
-  port: Number(process.env.PG_PORT),
-  username: process.env.PG_NAME as string,
-  password: process.env.PG_PASSWORD as string,
-  database: process.env.DATABASE as string,
-  entities: ["dist/entity/*.js"],
-  logging: false,
-  synchronize: true,
-});
 
 PostgresDataSource.initialize()
   .then(() => {
