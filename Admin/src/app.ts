@@ -2,6 +2,7 @@ import * as dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
 import helmet from "helmet";
+import errorHandler from "./middleware/error-handler";
 import { DataSource } from "typeorm";
 
 dotenv.config();
@@ -19,8 +20,9 @@ app.use(
   })
 );
 app.use(express.json());
+app.use(errorHandler);
 
-const PostgresDataSource = new DataSource({
+export const PostgresDataSource = new DataSource({
   type: "postgres",
   host: process.env.PG_HOST as string,
   port: Number(process.env.PG_PORT),
