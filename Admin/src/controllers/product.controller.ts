@@ -6,7 +6,7 @@ const { getAll, getProduct, createProduct } = new ProductService();
 
 export const getProducts = async (req: Request, res: Response) => {
   try {
-    const products = getAll();
+    const products = await getAll();
 
     res.status(200).json({
       message: "Retrieved all products",
@@ -21,7 +21,7 @@ export const getProducts = async (req: Request, res: Response) => {
 
 export const addProduct = async (req: Request, res: Response) => {
   try {
-    const product = createProduct(req.body);
+    const product = await createProduct(req.body);
 
     res.status(200).json({
       message: "Product added successfully",

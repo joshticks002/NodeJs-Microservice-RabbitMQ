@@ -1,5 +1,5 @@
 import { Router, Request, Response } from "express";
-import { getProducts } from "../controllers/product.controller";
+import { getProducts, addProduct } from "../controllers/product.controller";
 
 const router = Router();
 
@@ -11,6 +11,6 @@ router.get("/", (req: Request, res: Response) => {
     data: [],
   });
 });
-router.get("/products", getProducts);
+router.route("/products").get(getProducts).post(addProduct);
 
 export default router;

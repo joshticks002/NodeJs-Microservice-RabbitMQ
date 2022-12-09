@@ -44,41 +44,51 @@ var product_resolver_1 = require("../resolvers/product.resolver");
 var application_error_1 = __importDefault(require("../errors/application-error"));
 var _a = new product_resolver_1.ProductService(), getAll = _a.getAll, getProduct = _a.getProduct, createProduct = _a.createProduct;
 var getProducts = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var products;
+    var products, err_1;
     return __generator(this, function (_a) {
-        try {
-            products = getAll();
-            res.status(200).json({
-                message: "Retrieved all products",
-                data: products,
-                status: true,
-                statusCode: 200,
-            });
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, getAll()];
+            case 1:
+                products = _a.sent();
+                res.status(200).json({
+                    message: "Retrieved all products",
+                    data: products,
+                    status: true,
+                    statusCode: 200,
+                });
+                return [3 /*break*/, 3];
+            case 2:
+                err_1 = _a.sent();
+                throw new application_error_1.default("".concat(err_1.message));
+            case 3: return [2 /*return*/];
         }
-        catch (err) {
-            throw new application_error_1.default("".concat(err.message));
-        }
-        return [2 /*return*/];
     });
 }); };
 exports.getProducts = getProducts;
 var addProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var product;
+    var product, err_2;
     return __generator(this, function (_a) {
-        try {
-            product = createProduct(req.body);
-            res.status(200).json({
-                message: "Product added successfully",
-                data: product,
-                status: true,
-                statusCode: 200,
-            });
+        switch (_a.label) {
+            case 0:
+                _a.trys.push([0, 2, , 3]);
+                return [4 /*yield*/, createProduct(req.body)];
+            case 1:
+                product = _a.sent();
+                res.status(200).json({
+                    message: "Product added successfully",
+                    data: product,
+                    status: true,
+                    statusCode: 200,
+                });
+                return [3 /*break*/, 3];
+            case 2:
+                err_2 = _a.sent();
+                throw new application_error_1.default("".concat(err_2.message));
+            case 3: return [2 /*return*/];
         }
-        catch (err) {
-            throw new application_error_1.default("".concat(err.message));
-        }
-        return [2 /*return*/];
     });
 }); };
 exports.addProduct = addProduct;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHJvZHVjdC5jb250cm9sbGVyLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vc3JjL2NvbnRyb2xsZXJzL3Byb2R1Y3QuY29udHJvbGxlci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFBQSxrRUFBK0Q7QUFDL0Qsa0ZBQTJEO0FBR3JELElBQUEsS0FBd0MsSUFBSSxpQ0FBYyxFQUFFLEVBQTFELE1BQU0sWUFBQSxFQUFFLFVBQVUsZ0JBQUEsRUFBRSxhQUFhLG1CQUF5QixDQUFDO0FBRTVELElBQU0sV0FBVyxHQUFHLFVBQU8sR0FBWSxFQUFFLEdBQWE7OztRQUMzRCxJQUFJO1lBQ0ksUUFBUSxHQUFHLE1BQU0sRUFBRSxDQUFDO1lBRTFCLEdBQUcsQ0FBQyxNQUFNLENBQUMsR0FBRyxDQUFDLENBQUMsSUFBSSxDQUFDO2dCQUNuQixPQUFPLEVBQUUsd0JBQXdCO2dCQUNqQyxJQUFJLEVBQUUsUUFBUTtnQkFDZCxNQUFNLEVBQUUsSUFBSTtnQkFDWixVQUFVLEVBQUUsR0FBRzthQUNoQixDQUFDLENBQUM7U0FDSjtRQUFDLE9BQU8sR0FBRyxFQUFFO1lBQ1osTUFBTSxJQUFJLDJCQUFnQixDQUFDLFVBQUcsR0FBRyxDQUFDLE9BQU8sQ0FBRSxDQUFDLENBQUM7U0FDOUM7OztLQUNGLENBQUM7QUFiVyxRQUFBLFdBQVcsZUFhdEI7QUFFSyxJQUFNLFVBQVUsR0FBRyxVQUFPLEdBQVksRUFBRSxHQUFhOzs7UUFDMUQsSUFBSTtZQUNJLE9BQU8sR0FBRyxhQUFhLENBQUMsR0FBRyxDQUFDLElBQUksQ0FBQyxDQUFDO1lBRXhDLEdBQUcsQ0FBQyxNQUFNLENBQUMsR0FBRyxDQUFDLENBQUMsSUFBSSxDQUFDO2dCQUNuQixPQUFPLEVBQUUsNEJBQTRCO2dCQUNyQyxJQUFJLEVBQUUsT0FBTztnQkFDYixNQUFNLEVBQUUsSUFBSTtnQkFDWixVQUFVLEVBQUUsR0FBRzthQUNoQixDQUFDLENBQUM7U0FDSjtRQUFDLE9BQU8sR0FBRyxFQUFFO1lBQ1osTUFBTSxJQUFJLDJCQUFnQixDQUFDLFVBQUcsR0FBRyxDQUFDLE9BQU8sQ0FBRSxDQUFDLENBQUM7U0FDOUM7OztLQUNGLENBQUM7QUFiVyxRQUFBLFVBQVUsY0FhckIifQ==
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHJvZHVjdC5jb250cm9sbGVyLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vc3JjL2NvbnRyb2xsZXJzL3Byb2R1Y3QuY29udHJvbGxlci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFBQSxrRUFBK0Q7QUFDL0Qsa0ZBQTJEO0FBR3JELElBQUEsS0FBd0MsSUFBSSxpQ0FBYyxFQUFFLEVBQTFELE1BQU0sWUFBQSxFQUFFLFVBQVUsZ0JBQUEsRUFBRSxhQUFhLG1CQUF5QixDQUFDO0FBRTVELElBQU0sV0FBVyxHQUFHLFVBQU8sR0FBWSxFQUFFLEdBQWE7Ozs7OztnQkFFeEMscUJBQU0sTUFBTSxFQUFFLEVBQUE7O2dCQUF6QixRQUFRLEdBQUcsU0FBYztnQkFFL0IsR0FBRyxDQUFDLE1BQU0sQ0FBQyxHQUFHLENBQUMsQ0FBQyxJQUFJLENBQUM7b0JBQ25CLE9BQU8sRUFBRSx3QkFBd0I7b0JBQ2pDLElBQUksRUFBRSxRQUFRO29CQUNkLE1BQU0sRUFBRSxJQUFJO29CQUNaLFVBQVUsRUFBRSxHQUFHO2lCQUNoQixDQUFDLENBQUM7Ozs7Z0JBRUgsTUFBTSxJQUFJLDJCQUFnQixDQUFDLFVBQUcsS0FBRyxDQUFDLE9BQU8sQ0FBRSxDQUFDLENBQUM7Ozs7S0FFaEQsQ0FBQztBQWJXLFFBQUEsV0FBVyxlQWF0QjtBQUVLLElBQU0sVUFBVSxHQUFHLFVBQU8sR0FBWSxFQUFFLEdBQWE7Ozs7OztnQkFFeEMscUJBQU0sYUFBYSxDQUFDLEdBQUcsQ0FBQyxJQUFJLENBQUMsRUFBQTs7Z0JBQXZDLE9BQU8sR0FBRyxTQUE2QjtnQkFFN0MsR0FBRyxDQUFDLE1BQU0sQ0FBQyxHQUFHLENBQUMsQ0FBQyxJQUFJLENBQUM7b0JBQ25CLE9BQU8sRUFBRSw0QkFBNEI7b0JBQ3JDLElBQUksRUFBRSxPQUFPO29CQUNiLE1BQU0sRUFBRSxJQUFJO29CQUNaLFVBQVUsRUFBRSxHQUFHO2lCQUNoQixDQUFDLENBQUM7Ozs7Z0JBRUgsTUFBTSxJQUFJLDJCQUFnQixDQUFDLFVBQUcsS0FBRyxDQUFDLE9BQU8sQ0FBRSxDQUFDLENBQUM7Ozs7S0FFaEQsQ0FBQztBQWJXLFFBQUEsVUFBVSxjQWFyQiJ9
