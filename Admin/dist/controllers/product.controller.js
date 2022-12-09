@@ -50,18 +50,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addProduct = exports.getProducts = void 0;
+exports.deleteProduct = exports.updateProduct = exports.getProduct = exports.addProduct = exports.getProducts = void 0;
 var product_service_1 = require("../services/product.service");
-var application_error_1 = __importDefault(require("../errors/application-error"));
+var not_found_1 = __importDefault(require("../errors/not-found"));
+var express_async_handler_1 = __importDefault(require("express-async-handler"));
 var paginate_data_1 = __importDefault(require("../utils/paginate-data"));
 var typeorm_1 = require("typeorm");
-var _a = new product_service_1.ProductService(), getAll = _a.getAll, getCount = _a.getCount, createProduct = _a.createProduct;
-var getProducts = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var query, _a, startIndex, endIndex, _b, products, productsCount, err_1;
+var _a = new product_service_1.ProductService(), findBy = _a.findBy, getCount = _a.getCount, findOneBy = _a.findOneBy, remove = _a.remove, create = _a.create, update = _a.update;
+exports.getProducts = (0, express_async_handler_1.default)(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var query, _a, startIndex, endIndex, _b, products, productsCount;
     return __generator(this, function (_c) {
         switch (_c.label) {
             case 0:
-                _c.trys.push([0, 2, , 3]);
                 query = {};
                 if (req.query.title) {
                     query.where = {
@@ -75,7 +75,7 @@ var getProducts = function (req, res) { return __awaiter(void 0, void 0, void 0,
                     query.take = endIndex;
                 }
                 return [4 /*yield*/, Promise.all([
-                        getAll(__assign({}, query)),
+                        findBy(__assign({}, query)),
                         getCount(),
                     ])];
             case 1:
@@ -87,27 +87,20 @@ var getProducts = function (req, res) { return __awaiter(void 0, void 0, void 0,
                         page: query.page ? Number(query.page) : 1,
                         per_page: 10,
                         total_pages: productsCount > 10 ? productsCount / 10 : 1,
-                        data: products,
+                        products: products,
                     },
                     status: true,
                     statusCode: 200,
                 });
-                return [3 /*break*/, 3];
-            case 2:
-                err_1 = _c.sent();
-                throw new application_error_1.default("".concat(err_1.message));
-            case 3: return [2 /*return*/];
+                return [2 /*return*/];
         }
     });
-}); };
-exports.getProducts = getProducts;
-var addProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
-    var product, err_2;
+}); });
+exports.addProduct = (0, express_async_handler_1.default)(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var product;
     return __generator(this, function (_a) {
         switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, createProduct(req.body)];
+            case 0: return [4 /*yield*/, create(req.body)];
             case 1:
                 product = _a.sent();
                 res.status(201).json({
@@ -116,13 +109,88 @@ var addProduct = function (req, res) { return __awaiter(void 0, void 0, void 0, 
                     status: true,
                     statusCode: 201,
                 });
-                return [3 /*break*/, 3];
-            case 2:
-                err_2 = _a.sent();
-                throw new application_error_1.default("".concat(err_2.message));
-            case 3: return [2 /*return*/];
+                return [2 /*return*/];
         }
     });
-}); };
-exports.addProduct = addProduct;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHJvZHVjdC5jb250cm9sbGVyLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vc3JjL2NvbnRyb2xsZXJzL3Byb2R1Y3QuY29udHJvbGxlci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUFBLCtEQUE2RDtBQUM3RCxrRkFBMkQ7QUFFM0QseUVBQStDO0FBQy9DLG1DQUErQjtBQUV6QixJQUFBLEtBQXNDLElBQUksZ0NBQWMsRUFBRSxFQUF4RCxNQUFNLFlBQUEsRUFBRSxRQUFRLGNBQUEsRUFBRSxhQUFhLG1CQUF5QixDQUFDO0FBRTFELElBQU0sV0FBVyxHQUFHLFVBQU8sR0FBWSxFQUFFLEdBQWE7Ozs7OztnQkFFckQsS0FBSyxHQUF3QixFQUFFLENBQUM7Z0JBRXBDLElBQUksR0FBRyxDQUFDLEtBQUssQ0FBQyxLQUFLLEVBQUU7b0JBQ25CLEtBQUssQ0FBQyxLQUFLLEdBQUc7d0JBQ1osS0FBSyxFQUFFLElBQUEsY0FBSSxFQUFDLFdBQUksR0FBRyxDQUFDLEtBQUssQ0FBQyxLQUFLLE1BQUcsQ0FBQztxQkFDcEMsQ0FBQztpQkFDSDtnQkFFRCxJQUFJLEdBQUcsQ0FBQyxLQUFLLENBQUMsSUFBSSxFQUFFO29CQUNaLEtBQTJCLElBQUEsdUJBQVMsRUFBQyxNQUFNLENBQUMsR0FBRyxDQUFDLEtBQUssQ0FBQyxJQUFJLENBQUMsQ0FBQyxFQUExRCxVQUFVLGdCQUFBLEVBQUUsUUFBUSxjQUFBLENBQXVDO29CQUNuRSxLQUFLLENBQUMsSUFBSSxHQUFHLEdBQUcsQ0FBQyxLQUFLLENBQUMsSUFBSSxDQUFDO29CQUM1QixLQUFLLENBQUMsSUFBSSxHQUFHLFVBQVUsQ0FBQztvQkFDeEIsS0FBSyxDQUFDLElBQUksR0FBRyxRQUFRLENBQUM7aUJBQ3ZCO2dCQUVpQyxxQkFBTSxPQUFPLENBQUMsR0FBRyxDQUFDO3dCQUNsRCxNQUFNLGNBQU0sS0FBSyxFQUFHO3dCQUNwQixRQUFRLEVBQUU7cUJBQ1gsQ0FBQyxFQUFBOztnQkFISSxLQUE0QixTQUdoQyxFQUhLLFFBQVEsUUFBQSxFQUFFLGFBQWEsUUFBQTtnQkFLOUIsR0FBRyxDQUFDLE1BQU0sQ0FBQyxHQUFHLENBQUMsQ0FBQyxJQUFJLENBQUM7b0JBQ25CLE9BQU8sRUFBRSx3QkFBd0I7b0JBQ2pDLElBQUksRUFBRTt3QkFDSixLQUFLLEVBQUUsYUFBYTt3QkFDcEIsSUFBSSxFQUFFLEtBQUssQ0FBQyxJQUFJLENBQUMsQ0FBQyxDQUFDLE1BQU0sQ0FBQyxLQUFLLENBQUMsSUFBSSxDQUFDLENBQUMsQ0FBQyxDQUFDLENBQUM7d0JBQ3pDLFFBQVEsRUFBRSxFQUFFO3dCQUNaLFdBQVcsRUFBRSxhQUFhLEdBQUcsRUFBRSxDQUFDLENBQUMsQ0FBQyxhQUFhLEdBQUcsRUFBRSxDQUFDLENBQUMsQ0FBQyxDQUFDO3dCQUN4RCxJQUFJLEVBQUUsUUFBUTtxQkFDZjtvQkFDRCxNQUFNLEVBQUUsSUFBSTtvQkFDWixVQUFVLEVBQUUsR0FBRztpQkFDaEIsQ0FBQyxDQUFDOzs7O2dCQUVILE1BQU0sSUFBSSwyQkFBZ0IsQ0FBQyxVQUFHLEtBQUcsQ0FBQyxPQUFPLENBQUUsQ0FBQyxDQUFDOzs7O0tBRWhELENBQUM7QUFyQ1csUUFBQSxXQUFXLGVBcUN0QjtBQUVLLElBQU0sVUFBVSxHQUFHLFVBQU8sR0FBWSxFQUFFLEdBQWE7Ozs7OztnQkFFeEMscUJBQU0sYUFBYSxDQUFDLEdBQUcsQ0FBQyxJQUFJLENBQUMsRUFBQTs7Z0JBQXZDLE9BQU8sR0FBRyxTQUE2QjtnQkFFN0MsR0FBRyxDQUFDLE1BQU0sQ0FBQyxHQUFHLENBQUMsQ0FBQyxJQUFJLENBQUM7b0JBQ25CLE9BQU8sRUFBRSw0QkFBNEI7b0JBQ3JDLElBQUksRUFBRSxFQUFFO29CQUNSLE1BQU0sRUFBRSxJQUFJO29CQUNaLFVBQVUsRUFBRSxHQUFHO2lCQUNoQixDQUFDLENBQUM7Ozs7Z0JBRUgsTUFBTSxJQUFJLDJCQUFnQixDQUFDLFVBQUcsS0FBRyxDQUFDLE9BQU8sQ0FBRSxDQUFDLENBQUM7Ozs7S0FFaEQsQ0FBQztBQWJXLFFBQUEsVUFBVSxjQWFyQiJ9
+}); });
+exports.getProduct = (0, express_async_handler_1.default)(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var product;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, findOneBy({ id: req.params.id })];
+            case 1:
+                product = (_a.sent()) || null;
+                if (!product) {
+                    res.status(404);
+                    throw new not_found_1.default("Product not found");
+                }
+                res.status(200).json({
+                    message: "Product retrieved successfully",
+                    data: {
+                        product: product,
+                    },
+                    status: true,
+                    statusCode: 200,
+                });
+                return [2 /*return*/];
+        }
+    });
+}); });
+exports.updateProduct = (0, express_async_handler_1.default)(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var isValidProduct, product, updatedProduct;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, findOneBy({ id: req.params.id })];
+            case 1:
+                isValidProduct = _a.sent();
+                if (!!isValidProduct) return [3 /*break*/, 3];
+                return [4 /*yield*/, create(req.body)];
+            case 2:
+                product = _a.sent();
+                res.status(201).json({
+                    message: "Product added successfully",
+                    data: {},
+                    status: true,
+                    statusCode: 201,
+                });
+                return [2 /*return*/];
+            case 3: return [4 /*yield*/, update(isValidProduct, req.body)];
+            case 4:
+                updatedProduct = _a.sent();
+                res.status(200).json({
+                    message: "Product updated successfully",
+                    data: {},
+                    status: true,
+                    statusCode: 200,
+                });
+                return [2 /*return*/];
+        }
+    });
+}); });
+exports.deleteProduct = (0, express_async_handler_1.default)(function (req, res) { return __awaiter(void 0, void 0, void 0, function () {
+    var id, isValidProduct, product;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                id = req.params.id;
+                return [4 /*yield*/, findOneBy({ id: id })];
+            case 1:
+                isValidProduct = _a.sent();
+                if (!isValidProduct) {
+                    res.status(404);
+                    throw new not_found_1.default("Product not found");
+                }
+                return [4 /*yield*/, remove(Number(id))];
+            case 2:
+                product = _a.sent();
+                res.status(204).json({
+                    message: "Product successfully removed",
+                    data: {},
+                    status: true,
+                    statusCode: 204,
+                });
+                return [2 /*return*/];
+        }
+    });
+}); });
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHJvZHVjdC5jb250cm9sbGVyLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vc3JjL2NvbnRyb2xsZXJzL3Byb2R1Y3QuY29udHJvbGxlci50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7OztBQUFBLCtEQUE2RDtBQUU3RCxrRUFBZ0Q7QUFDaEQsZ0ZBQXdEO0FBRXhELHlFQUErQztBQUMvQyxtQ0FBK0I7QUFHekIsSUFBQSxLQUNKLElBQUksZ0NBQWMsRUFBRSxFQURkLE1BQU0sWUFBQSxFQUFFLFFBQVEsY0FBQSxFQUFFLFNBQVMsZUFBQSxFQUFFLE1BQU0sWUFBQSxFQUFFLE1BQU0sWUFBQSxFQUFFLE1BQU0sWUFDckMsQ0FBQztBQUVWLFFBQUEsV0FBVyxHQUFHLElBQUEsK0JBQW1CLEVBQzVDLFVBQU8sR0FBWSxFQUFFLEdBQWE7Ozs7O2dCQUM1QixLQUFLLEdBQXdCLEVBQUUsQ0FBQztnQkFFcEMsSUFBSSxHQUFHLENBQUMsS0FBSyxDQUFDLEtBQUssRUFBRTtvQkFDbkIsS0FBSyxDQUFDLEtBQUssR0FBRzt3QkFDWixLQUFLLEVBQUUsSUFBQSxjQUFJLEVBQUMsV0FBSSxHQUFHLENBQUMsS0FBSyxDQUFDLEtBQUssTUFBRyxDQUFDO3FCQUNwQyxDQUFDO2lCQUNIO2dCQUVELElBQUksR0FBRyxDQUFDLEtBQUssQ0FBQyxJQUFJLEVBQUU7b0JBQ1osS0FBMkIsSUFBQSx1QkFBUyxFQUFDLE1BQU0sQ0FBQyxHQUFHLENBQUMsS0FBSyxDQUFDLElBQUksQ0FBQyxDQUFDLEVBQTFELFVBQVUsZ0JBQUEsRUFBRSxRQUFRLGNBQUEsQ0FBdUM7b0JBQ25FLEtBQUssQ0FBQyxJQUFJLEdBQUcsR0FBRyxDQUFDLEtBQUssQ0FBQyxJQUFJLENBQUM7b0JBQzVCLEtBQUssQ0FBQyxJQUFJLEdBQUcsVUFBVSxDQUFDO29CQUN4QixLQUFLLENBQUMsSUFB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

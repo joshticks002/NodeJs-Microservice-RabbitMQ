@@ -1,13 +1,17 @@
 import { ProductService } from "../services/product.service";
-import ApplicationError from "../errors/application-error";
+import BadRequestError from "../errors/bad-request";
+import NotFoundError from "../errors/not-found";
+import expressAsyncHandler from "express-async-handler";
 import { Request, Response } from "express";
 import listRange from "../utils/paginate-data";
 import { Like } from "typeorm";
+import { IPRODUCT } from "../entity/product-type";
 
-const { getAll, getCount, createProduct } = new ProductService();
+const { findBy, getCount, findOneBy, remove, create, update } =
+  new ProductService();
 
-export const getProducts = async (req: Request, res: Response) => {
-  try {
+export const getProducts = expressAsyncHandler(
+  async (req: Request, res: Response) => {
     let query: Record<string, any> = {};
 
     if (req.query.title) {
@@ -24,7 +28,7 @@ export const getProducts = async (req: Request, res: Response) => {
     }
 
     const [products, productsCount] = await Promise.all([
-      getAll({ ...query }),
+      findBy({ ...query }),
       getCount(),
     ]);
 
@@ -35,19 +39,17 @@ export const getProducts = async (req: Request, res: Response) => {
         page: query.page ? Number(query.page) : 1,
         per_page: 10,
         total_pages: productsCount > 10 ? productsCount / 10 : 1,
-        data: products,
+        products,
       },
       status: true,
       statusCode: 200,
     });
-  } catch (err) {
-    throw new ApplicationError(`${err.message}`);
   }
-};
+);
 
-export const addProduct = async (req: Request, res: Response) => {
-  try {
-    const product = await createProduct(req.body);
+export const addProduct = expressAsyncHandler(
+  async (req: Request, res: Response) => {
+    const product = await create(req.body);
 
     res.status(201).json({
       message: "Product added successfully",
@@ -55,7 +57,75 @@ export const addProduct = async (req: Request, res: Response) => {
       status: true,
       statusCode: 201,
     });
-  } catch (err) {
-    throw new ApplicationError(`${err.message}`);
   }
-};
+);
+
+export const getProduct = expressAsyncHandler(
+  async (req: Request, res: Response) => {
+    const product =
+      ((await findOneBy({ id: req.params.id })) as IPRODUCT) || null;
+
+    if (!product) {
+      res.status(404);
+      throw new NotFoundError(`Product not found`);
+    }
+
+    res.status(200).json({
+      message: "Product retrieved successfully",
+      data: {
+        product,
+      },
+      status: true,
+      statusCode: 200,
+    });
+  }
+);
+
+export const updateProduct = expressAsyncHandler(
+  async (req: Request, res: Response) => {
+    const isValidProduct = await findOneBy({ id: req.params.id });
+
+    if (!isValidProduct) {
+      const product = await create(req.body);
+
+      res.status(201).json({
+        message: "Product added successfully",
+        data: {},
+        status: true,
+        statusCode: 201,
+      });
+      return;
+    }
+
+    const updatedProduct = await update(isValidProduct, req.body);
+
+    res.status(200).json({
+      message: "Product updated successfully",
+      data: {},
+      status: true,
+      statusCode: 200,
+    });
+  }
+);
+
+export const deleteProduct = expressAsyncHandler(
+  async (req: Request, res: Response) => {
+    const { id } = req.params;
+
+    const isValidProduct = await findOneBy({ id });
+
+    if (!isValidProduct) {
+      res.status(404);
+      throw new NotFoundError(`Product not found`);
+    }
+
+    const product = await remove(Number(id));
+
+    res.status(204).json({
+      message: "Product successfully removed",
+      data: {},
+      status: true,
+      statusCode: 204,
+    });
+  }
+);

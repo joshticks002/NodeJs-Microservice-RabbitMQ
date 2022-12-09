@@ -19,7 +19,8 @@ const errorHandler = (
   res.status(statusCode).json({
     message: err.message || "INTERNAL SERVER ERROR",
     data: {},
-    status: statusCode,
+    statusCode: statusCode,
+    status: false,
   });
 };
 

@@ -1,6 +1,6 @@
 "use strict";
 /**
- * @description recieves a number argument to yield a offset and limit
+ * @description recieves a number argument to yield a offset and limit values
  * @param {Number} page_no query params
  * @return {Object} { startIndex, endIndex }
  */

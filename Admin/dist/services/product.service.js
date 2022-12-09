@@ -42,7 +42,7 @@ var product_1 = require("../entity/product");
 var ProductService = /** @class */ (function () {
     function ProductService() {
     }
-    ProductService.prototype.getAll = function (query) {
+    ProductService.prototype.findBy = function (query) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -52,7 +52,7 @@ var ProductService = /** @class */ (function () {
             });
         });
     };
-    ProductService.prototype.getProduct = function (query) {
+    ProductService.prototype.findOneBy = function (query) {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 switch (_a.label) {
@@ -62,13 +62,13 @@ var ProductService = /** @class */ (function () {
             });
         });
     };
-    ProductService.prototype.createProduct = function (query) {
+    ProductService.prototype.create = function (data) {
         return __awaiter(this, void 0, void 0, function () {
             var product;
             return __generator(this, function (_a) {
                 switch (_a.label) {
                     case 0:
-                        product = db_1.PostgresDataSource.manager.create(product_1.Product, query);
+                        product = db_1.PostgresDataSource.manager.create(product_1.Product, data);
                         return [4 /*yield*/, db_1.PostgresDataSource.manager.save(product)];
                     case 1: return [2 /*return*/, _a.sent()];
                 }
@@ -85,7 +85,29 @@ var ProductService = /** @class */ (function () {
             });
         });
     };
+    ProductService.prototype.update = function (product, query) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        db_1.PostgresDataSource.manager.merge(product_1.Product, product, query);
+                        return [4 /*yield*/, db_1.PostgresDataSource.manager.save(product)];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
+    ProductService.prototype.remove = function (id) {
+        return __awaiter(this, void 0, void 0, function () {
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, db_1.PostgresDataSource.manager.delete(product_1.Product, { id: id })];
+                    case 1: return [2 /*return*/, _a.sent()];
+                }
+            });
+        });
+    };
     return ProductService;
 }());
 exports.ProductService = ProductService;
-//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHJvZHVjdC5zZXJ2aWNlLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vc3JjL3NlcnZpY2VzL3Byb2R1Y3Quc2VydmljZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFBQSxxQ0FBb0Q7QUFDcEQsNkNBQTRDO0FBRTVDO0lBQUE7SUFpQkEsQ0FBQztJQWhCTywrQkFBTSxHQUFaLFVBQWEsS0FBMEI7Ozs7NEJBQzlCLHFCQUFNLHVCQUFrQixDQUFDLE9BQU8sQ0FBQyxJQUFJLENBQUMsaUJBQU8sRUFBRSxLQUFLLENBQUMsRUFBQTs0QkFBNUQsc0JBQU8sU0FBcUQsRUFBQzs7OztLQUM5RDtJQUVLLG1DQUFVLEdBQWhCLFVBQWlCLEtBQTBCOzs7OzRCQUNsQyxxQkFBTSx1QkFBa0IsQ0FBQyxPQUFPLENBQUMsT0FBTyxDQUFDLGlCQUFPLEVBQUUsRUFBRSxLQUFLLEVBQUUsS0FBSyxFQUFFLENBQUMsRUFBQTs0QkFBMUUsc0JBQU8sU0FBbUUsRUFBQzs7OztLQUM1RTtJQUVLLHNDQUFhLEdBQW5CLFVBQW9CLEtBQTBCOzs7Ozs7d0JBQ3RDLE9BQU8sR0FBRyx1QkFBa0IsQ0FBQyxPQUFPLENBQUMsTUFBTSxDQUFDLGlCQUFPLEVBQUUsS0FBSyxDQUFDLENBQUM7d0JBQzNELHFCQUFNLHVCQUFrQixDQUFDLE9BQU8sQ0FBQyxJQUFJLENBQUMsT0FBTyxDQUFDLEVBQUE7NEJBQXJELHNCQUFPLFNBQThDLEVBQUM7Ozs7S0FDdkQ7SUFFSyxpQ0FBUSxHQUFkOzs7OzRCQUNTLHFCQUFNLHVCQUFrQixDQUFDLE9BQU8sQ0FBQyxLQUFLLENBQUMsaUJBQU8sQ0FBQyxFQUFBOzRCQUF0RCxzQkFBTyxTQUErQyxFQUFDOzs7O0tBQ3hEO0lBQ0gscUJBQUM7QUFBRCxDQUFDLEFBakJELElBaUJDO0FBakJZLHdDQUFjIn0=
+//# sourceMappingURL=data:application/json;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoicHJvZHVjdC5zZXJ2aWNlLmpzIiwic291cmNlUm9vdCI6IiIsInNvdXJjZXMiOlsiLi4vLi4vc3JjL3NlcnZpY2VzL3Byb2R1Y3Quc2VydmljZS50cyJdLCJuYW1lcyI6W10sIm1hcHBpbmdzIjoiOzs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7Ozs7QUFBQSxxQ0FBb0Q7QUFDcEQsNkNBQTRDO0FBRzVDO0lBQUE7SUEwQkEsQ0FBQztJQXpCTywrQkFBTSxHQUFaLFVBQWEsS0FBMEI7Ozs7NEJBQzlCLHFCQUFNLHVCQUFrQixDQUFDLE9BQU8sQ0FBQyxJQUFJLENBQUMsaUJBQU8sRUFBRSxLQUFLLENBQUMsRUFBQTs0QkFBNUQsc0JBQU8sU0FBcUQsRUFBQzs7OztLQUM5RDtJQUVLLGtDQUFTLEdBQWYsVUFBZ0IsS0FBMEI7Ozs7NEJBQ2pDLHFCQUFNLHVCQUFrQixDQUFDLE9BQU8sQ0FBQyxPQUFPLENBQUMsaUJBQU8sRUFBRSxFQUFFLEtBQUssRUFBRSxLQUFLLEVBQUUsQ0FBQyxFQUFBOzRCQUExRSxzQkFBTyxTQUFtRSxFQUFDOzs7O0tBQzVFO0lBRUssK0JBQU0sR0FBWixVQUFhLElBQWM7Ozs7Ozt3QkFDbkIsT0FBTyxHQUFHLHVCQUFrQixDQUFDLE9BQU8sQ0FBQyxNQUFNLENBQUMsaUJBQU8sRUFBRSxJQUFJLENBQUMsQ0FBQzt3QkFDMUQscUJBQU0sdUJBQWtCLENBQUMsT0FBTyxDQUFDLElBQUksQ0FBQyxPQUFPLENBQUMsRUFBQTs0QkFBckQsc0JBQU8sU0FBOEMsRUFBQzs7OztLQUN2RDtJQUVLLGlDQUFRLEdBQWQ7Ozs7NEJBQ1MscUJBQU0sdUJBQWtCLENBQUMsT0FBTyxDQUFDLEtBQUssQ0FBQyxpQkFBTyxDQUFDLEVBQUE7NEJBQXRELHNCQUFPLFNBQStDLEVBQUM7Ozs7S0FDeEQ7SUFFSywrQkFBTSxHQUFaLFVBQWEsT0FBaUIsRUFBRSxLQUEwQjs7Ozs7d0JBQ3hELHVCQUFrQixDQUFDLE9BQU8sQ0FBQyxLQUFLLENBQUMsaUJBQU8sRUFBRSxPQUFPLEVBQUUsS0FBSyxDQUFDLENBQUM7d0JBQ25ELHFCQUFNLHVCQUFrQixDQUFDLE9BQU8sQ0FBQyxJQUFJLENBQUMsT0FBTyxDQUFDLEVBQUE7NEJBQXJELHNCQUFPLFNBQThDLEVBQUM7Ozs7S0FDdkQ7SUFFSywrQkFBTSxHQUFaLFVBQWEsRUFBVTs7Ozs0QkFDZCxxQkFBTSx1QkFBa0IsQ0FBQyxPQUFPLENBQUMsTUFBTSxDQUFDLGlCQUFPLEVBQUUsRUFBRSxFQUFFLElBQUEsRUFBRSxDQUFDLEVBQUE7NEJBQS9ELHNCQUFPLFNBQXdELEVBQUM7Ozs7S0FDakU7SUFDSCxxQkFBQztBQUFELENBQUMsQUExQkQsSUEwQkM7QUExQlksd0NBQWMifQ==

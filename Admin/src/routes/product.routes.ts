@@ -1,5 +1,12 @@
 import { Router, Request, Response } from "express";
-import { getProducts, addProduct } from "../controllers/product.controller";
+import { validateRequestParams } from "../middleware/request-params-handler";
+import {
+  getProducts,
+  addProduct,
+  getProduct,
+  updateProduct,
+  deleteProduct,
+} from "../controllers/product.controller";
 
 const router = Router();
 
@@ -11,6 +18,13 @@ router.get("/", (req: Request, res: Response) => {
     data: [],
   });
 });
-router.route("/products").get(getProducts).post(addProduct);
+
+router.route("/api/v1/products").get(getProducts).post(addProduct);
+router
+  .route("/api/v1/products/:id")
+  .all(validateRequestParams)
+  .get(getProduct)
+  .put(updateProduct)
+  .delete(deleteProduct);
 
 export default router;
