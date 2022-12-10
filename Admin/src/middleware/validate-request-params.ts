@@ -5,7 +5,6 @@ import expressAsyncHandler from "express-async-handler";
 export const validateRequestParams = expressAsyncHandler(
   async (req: Request, res: Response, next: NextFunction) => {
     if (isNaN(Number(req.params.id))) {
-      res.status(400);
       throw new BadRequestError("Invalid Request");
     }
     next();

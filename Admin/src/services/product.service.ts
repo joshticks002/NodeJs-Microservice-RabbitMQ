@@ -4,7 +4,11 @@ import { IPRODUCT } from "../entity/product-type";
 
 export class ProductService {
   async findBy(query: Record<string, any>) {
-    return await PostgresDataSource.manager.find(Product, query);
+    return await PostgresDataSource.manager.find(Product, {
+      take: 10,
+      skip: 0,
+      ...query,
+    });
   }
 
   async findOneBy(query: Record<string, any>) {
@@ -27,5 +31,9 @@ export class ProductService {
 
   async remove(id: number) {
     return await PostgresDataSource.manager.delete(Product, { id });
+  }
+
+  async save(product: IPRODUCT) {
+    return await PostgresDataSource.manager.save(product);
   }
 }

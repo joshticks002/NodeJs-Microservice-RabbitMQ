@@ -1,13 +1,13 @@
 import { ProductService } from "../services/product.service";
-import BadRequestError from "../errors/bad-request";
 import NotFoundError from "../errors/not-found";
 import expressAsyncHandler from "express-async-handler";
 import { Request, Response } from "express";
 import listRange from "../utils/paginate-data";
 import { Like } from "typeorm";
 import { IPRODUCT } from "../entity/product-type";
+import BadRequestError from "../errors/bad-request";
 
-const { findBy, getCount, findOneBy, remove, create, update } =
+const { findBy, getCount, findOneBy, remove, create, update, save } =
   new ProductService();
 
 export const getProducts = expressAsyncHandler(
@@ -49,6 +49,14 @@ export const getProducts = expressAsyncHandler(
 
 export const addProduct = expressAsyncHandler(
   async (req: Request, res: Response) => {
+    const { title } = req.body;
+
+    const isValidProduct = ((await findOneBy({ title })) as IPRODUCT) || null;
+
+    if (isValidProduct) {
+      throw new BadRequestError(`Product already exist`);
+    }
+
     const product = await create(req.body);
 
     res.status(201).json({
@@ -66,7 +74,6 @@ export const getProduct = expressAsyncHandler(
       ((await findOneBy({ id: req.params.id })) as IPRODUCT) || null;
 
     if (!product) {
-      res.status(404);
       throw new NotFoundError(`Product not found`);
     }
 
@@ -115,7 +122,6 @@ export const deleteProduct = expressAsyncHandler(
     const isValidProduct = await findOneBy({ id });
 
     if (!isValidProduct) {
-      res.status(404);
       throw new NotFoundError(`Product not found`);
     }
 
@@ -126,6 +132,27 @@ export const deleteProduct = expressAsyncHandler(
       data: {},
       status: true,
       statusCode: 204,
+    });
+  }
+);
+
+export const likeProduct = expressAsyncHandler(
+  async (req: Request, res: Response) => {
+    const isValidProduct = await findOneBy({ id: req.params.id });
+
+    if (!isValidProduct) {
+      throw new NotFoundError(`Product not found`);
+    }
+
+    isValidProduct.likes++;
+
+    const updatedProduct = await save(isValidProduct);
+
+    res.status(200).json({
+      message: "Product updated successfully",
+      data: {},
+      status: true,
+      statusCode: 200,
     });
   }
 );
