@@ -6,6 +6,17 @@ import listRange from "../utils/paginate-data";
 import { Like } from "typeorm";
 import { IPRODUCT } from "../entity/product-type";
 import BadRequestError from "../errors/bad-request";
+const amqp = require("amqplib");
+
+let channel, connection;
+
+const connect = async () => {
+  const amqpServer =
+    "amqps://dvxdcsef:B5HJBCOEjcxudBbNhXvQ1fhAGobT31cN@hawk.rmq.cloudamqp.com/dvxdcsef";
+  connection = await amqp.connect(amqpServer);
+  channel = await connection.createChannel();
+};
+connect();
 
 const { findBy, getCount, findOneBy, remove, create, update, save } =
   new ProductService();
@@ -58,6 +69,10 @@ export const addProduct = expressAsyncHandler(
     }
 
     const product = await create(req.body);
+    channel.sendToQueue(
+      "PRODUCT_CREATED",
+      Buffer.from(JSON.stringify(product))
+    );
 
     res.status(201).json({
       message: "Product added successfully",
@@ -94,6 +109,10 @@ export const updateProduct = expressAsyncHandler(
 
     if (!isValidProduct) {
       const product = await create(req.body);
+      channel.sendToQueue(
+        "PRODUCT_CREATED",
+        Buffer.from(JSON.stringify(product))
+      );
 
       res.status(201).json({
         message: "Product added successfully",
@@ -105,6 +124,10 @@ export const updateProduct = expressAsyncHandler(
     }
 
     const updatedProduct = await update(isValidProduct, req.body);
+    channel.sendToQueue(
+      "PRODUCT_UPDATED",
+      Buffer.from(JSON.stringify(updatedProduct))
+    );
 
     res.status(200).json({
       message: "Product updated successfully",
@@ -126,6 +149,7 @@ export const deleteProduct = expressAsyncHandler(
     }
 
     const product = await remove(Number(id));
+    channel.sendToQueue("PRODUCT_DELETED", Buffer.from(id));
 
     res.status(204).json({
       message: "Product successfully removed",
