@@ -1,5 +1,6 @@
 import { Router, Request, Response } from "express";
-import { getProducts } from "../controllers/product.controller";
+import { validateRequestParams } from "../middleware/validate-request-params";
+import { getProducts, likeProduct } from "../controllers/product.controller";
 
 const router = Router();
 
@@ -13,5 +14,6 @@ router.get("/", (req: Request, res: Response) => {
 });
 
 router.route("/api/v1/products").get(getProducts);
+router.patch("/api/v1/products/:id/like", validateRequestParams, likeProduct);
 
 export default router;

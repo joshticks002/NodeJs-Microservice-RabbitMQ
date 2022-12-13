@@ -11,8 +11,7 @@ const amqp = require("amqplib");
 let channel, connection;
 
 const connect = async () => {
-  const amqpServer =
-    "amqps://dvxdcsef:B5HJBCOEjcxudBbNhXvQ1fhAGobT31cN@hawk.rmq.cloudamqp.com/dvxdcsef";
+  const amqpServer = process.env.AMQP_SERVER;
   connection = await amqp.connect(amqpServer);
   channel = await connection.createChannel();
 };
@@ -171,6 +170,10 @@ export const likeProduct = expressAsyncHandler(
     isValidProduct.likes++;
 
     const updatedProduct = await save(isValidProduct);
+    channel.sendToQueue(
+      "PRODUCT_UPDATED",
+      Buffer.from(JSON.stringify(isValidProduct))
+    );
 
     res.status(200).json({
       message: "Product updated successfully",
